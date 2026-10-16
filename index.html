@@ -1,0 +1,459 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI 뉴스 클리핑 · 2026-10-15</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<style>
+/* ───────── shadcn/ui tokens (zinc) ───────── */
+:root{
+  --background:#ffffff; --foreground:#09090b;
+  --card:#ffffff; --card-foreground:#09090b;
+  --muted:#f4f4f5; --muted-foreground:#71717a;
+  --secondary:#f4f4f5; --secondary-foreground:#18181b;
+  --border:#e4e4e7; --ring:#a1a1aa;
+  --primary:#18181b; --primary-foreground:#fafafa;
+  --radius:0.75rem;
+  --shadow-sm:0 1px 2px rgba(0,0,0,.05);
+  /* liquid glass accents */
+  --glass-bg:rgba(255,255,255,.55);
+  --glass-border:rgba(255,255,255,.75);
+  --glass-hi:rgba(255,255,255,.95);
+  --glass-lo:rgba(255,255,255,.25);
+  --glass-shadow:0 10px 40px -10px rgba(24,24,27,.18);
+  --blob-1:#a5b4fc; --blob-2:#f0abfc; --blob-3:#7dd3fc; --blob-4:#fde68a;
+  --blob-opacity:.55;
+  --cat-model:#6366f1; --cat-biz:#0ea5e9; --cat-policy:#f59e0b;
+  --cat-infra:#10b981; --cat-society:#ec4899; --cat-safety:#ef4444;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --background:#09090b; --foreground:#fafafa;
+    --card:#0c0c0f; --card-foreground:#fafafa;
+    --muted:#18181b; --muted-foreground:#a1a1aa;
+    --secondary:#27272a; --secondary-foreground:#fafafa;
+    --border:#27272a; --ring:#52525b;
+    --primary:#fafafa; --primary-foreground:#18181b;
+    --glass-bg:rgba(24,24,27,.45);
+    --glass-border:rgba(255,255,255,.12);
+    --glass-hi:rgba(255,255,255,.22);
+    --glass-lo:rgba(255,255,255,.04);
+    --glass-shadow:0 10px 40px -10px rgba(0,0,0,.6);
+    --blob-opacity:.32;
+  }
+}
+:root[data-theme="dark"]{
+  --background:#09090b; --foreground:#fafafa;
+  --card:#0c0c0f; --card-foreground:#fafafa;
+  --muted:#18181b; --muted-foreground:#a1a1aa;
+  --secondary:#27272a; --secondary-foreground:#fafafa;
+  --border:#27272a; --ring:#52525b;
+  --primary:#fafafa; --primary-foreground:#18181b;
+  --glass-bg:rgba(24,24,27,.45);
+  --glass-border:rgba(255,255,255,.12);
+  --glass-hi:rgba(255,255,255,.22);
+  --glass-lo:rgba(255,255,255,.04);
+  --glass-shadow:0 10px 40px -10px rgba(0,0,0,.6);
+  --blob-opacity:.32;
+}
+
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%; overflow-x:clip}
+body{overflow-x:clip}
+body{
+  margin:0; background:var(--background); color:var(--foreground);
+  font-family:"Pretendard Variable",Pretendard,-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,sans-serif;
+  font-size:15px; line-height:1.6; letter-spacing:-.005em;
+  -webkit-font-smoothing:antialiased;
+}
+a{color:inherit}
+.container{max-width:1080px; margin:0 auto; padding:0 16px}
+
+/* ───────── liquid glass primitive ───────── */
+.glass{
+  position:relative;
+  background:var(--glass-bg);
+  -webkit-backdrop-filter:blur(22px) saturate(180%);
+  backdrop-filter:blur(22px) saturate(180%);
+  border:1px solid var(--glass-border);
+  box-shadow:
+    inset 0 1px 0 var(--glass-hi),
+    inset 0 -1px 0 var(--glass-lo),
+    var(--glass-shadow);
+}
+.glass::before{ /* specular sheen */
+  content:""; position:absolute; inset:0; border-radius:inherit; pointer-events:none;
+  background:linear-gradient(135deg,rgba(255,255,255,.35) 0%,rgba(255,255,255,0) 38%,rgba(255,255,255,0) 70%,rgba(255,255,255,.12) 100%);
+  mix-blend-mode:soft-light;
+}
+
+/* ambient blobs — only behind hero area */
+.aurora{position:absolute; inset:0 0 auto 0; height:620px; overflow:hidden; pointer-events:none; z-index:0}
+.aurora span{position:absolute; border-radius:50%; filter:blur(70px); opacity:var(--blob-opacity)}
+.aurora .b1{width:420px;height:420px;background:var(--blob-1);top:-120px;left:-80px}
+.aurora .b2{width:360px;height:360px;background:var(--blob-2);top:40px;right:-60px}
+.aurora .b3{width:300px;height:300px;background:var(--blob-3);top:260px;left:30%}
+.aurora .b4{width:220px;height:220px;background:var(--blob-4);top:120px;left:55%}
+.aurora::after{content:"";position:absolute;inset:auto 0 0 0;height:200px;background:linear-gradient(to bottom,transparent,var(--background))}
+
+/* ───────── nav ───────── */
+.nav-wrap{position:sticky; top:12px; z-index:50; padding:0 16px}
+.nav{
+  max-width:1080px; margin:12px auto 0; border-radius:999px;
+  display:flex; align-items:center; justify-content:space-between; gap:12px;
+  padding:8px 8px 8px 18px;
+}
+.brand{display:flex; align-items:center; gap:10px; font-weight:700; font-size:14px; letter-spacing:-.01em}
+.brand-dot{width:22px;height:22px;border-radius:7px;background:conic-gradient(from 200deg,var(--blob-3),var(--blob-1),var(--blob-2),var(--blob-3));box-shadow:inset 0 1px 0 rgba(255,255,255,.6)}
+.nav-right{display:flex; align-items:center; gap:8px}
+
+/* ───────── shadcn primitives ───────── */
+.badge{
+  display:inline-flex; align-items:center; gap:6px; white-space:nowrap;
+  border-radius:999px; border:1px solid transparent;
+  padding:2px 10px; font-size:12px; font-weight:600; line-height:20px;
+}
+.badge-secondary{background:var(--secondary); color:var(--secondary-foreground)}
+.badge-outline{border-color:var(--border); color:var(--foreground)}
+.badge-muted{color:var(--muted-foreground); border-color:var(--border)}
+.badge .dot{width:6px;height:6px;border-radius:50%;background:currentColor}
+.btn{
+  display:inline-flex; align-items:center; justify-content:center; gap:6px;
+  height:36px; padding:0 14px; border-radius:calc(var(--radius) - 2px);
+  font:inherit; font-size:13px; font-weight:600; text-decoration:none; cursor:pointer;
+  border:1px solid var(--border); background:var(--background); color:var(--foreground);
+  transition:background .15s, border-color .15s;
+}
+.btn:hover{background:var(--muted)}
+.btn:focus-visible{outline:2px solid var(--ring); outline-offset:2px}
+.btn-icon{width:36px; padding:0; border-radius:999px}
+.btn-primary{background:var(--primary); color:var(--primary-foreground); border-color:var(--primary)}
+.btn-primary:hover{opacity:.9; background:var(--primary)}
+
+.card{
+  background:var(--card); color:var(--card-foreground);
+  border:1px solid var(--border); border-radius:var(--radius);
+  box-shadow:var(--shadow-sm);
+  transition:border-color .2s, box-shadow .2s, transform .2s;
+}
+.card:hover{border-color:var(--ring); box-shadow:0 6px 24px -12px rgba(0,0,0,.18)}
+
+/* ───────── hero ───────── */
+header.hero{position:relative; z-index:1; padding:56px 0 28px}
+.eyebrow{display:inline-flex; align-items:center; gap:8px; padding:6px 14px 6px 8px; border-radius:999px; font-size:13px; font-weight:600}
+.eyebrow .pill{background:var(--primary); color:var(--primary-foreground); border-radius:999px; padding:1px 9px; font-size:11px; letter-spacing:.04em}
+h1{font-size:clamp(32px,6vw,52px); line-height:1.08; letter-spacing:-.035em; margin:18px 0 14px; font-weight:800}
+h1 .grad{background:linear-gradient(100deg,var(--foreground) 10%,#6366f1 55%,#ec4899 95%); -webkit-background-clip:text; background-clip:text; color:transparent}
+.overview{max-width:720px; font-size:16.5px; color:var(--muted-foreground); margin:0}
+.stats{display:flex; flex-wrap:wrap; gap:10px; margin-top:24px}
+.stat{border-radius:16px; padding:12px 18px; min-width:120px}
+.stat b{display:block; font-size:22px; letter-spacing:-.02em; line-height:1.2}
+.stat span{font-size:12px; color:var(--muted-foreground); font-weight:500}
+.notice{margin-top:18px; padding:12px 16px; border-radius:var(--radius); border:1px solid var(--border); background:var(--muted); font-size:13.5px; color:var(--muted-foreground)}
+
+/* ───────── tabs (shadcn) ───────── */
+.tabs-row{position:relative; z-index:1; margin:8px 0 20px; overflow-x:auto; -webkit-overflow-scrolling:touch; scrollbar-width:none}
+.tabs-row::-webkit-scrollbar{display:none}
+.tabs{display:inline-flex; gap:2px; padding:4px; border-radius:calc(var(--radius) + 2px); background:var(--muted)}
+.tab{font:inherit; font-size:13px; font-weight:600; border:0; background:transparent; color:var(--muted-foreground); padding:6px 12px; border-radius:calc(var(--radius) - 2px); cursor:pointer; white-space:nowrap}
+.tab[aria-selected="true"]{background:var(--background); color:var(--foreground); box-shadow:var(--shadow-sm)}
+.tab .n{opacity:.6; font-weight:500; margin-left:4px}
+
+/* ───────── articles ───────── */
+main{position:relative; z-index:1; padding-bottom:48px}
+.grid{display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:16px}
+.article{display:flex; flex-direction:column; padding:20px; min-width:0}
+.article-head{display:flex; flex-wrap:wrap; align-items:center; gap:8px; margin-bottom:12px}
+.rank{
+  width:34px; height:34px; border-radius:11px; flex:none;
+  display:inline-flex; align-items:center; justify-content:center;
+  font-weight:800; font-size:14px; font-variant-numeric:tabular-nums;
+}
+.date{margin-left:auto; font-size:12px; color:var(--muted-foreground); font-variant-numeric:tabular-nums}
+.title-ko{font-size:18px; line-height:1.4; letter-spacing:-.02em; font-weight:700; margin:0 0 4px}
+.title-en{font-size:13px; color:var(--muted-foreground); margin:0 0 12px; line-height:1.45}
+.title-en a{text-decoration:none}
+.title-en a:hover{text-decoration:underline; text-underline-offset:3px}
+.summary{margin:0 0 14px; font-size:14.5px}
+.why{border-left:2px solid var(--foreground); background:var(--muted); border-radius:0 calc(var(--radius) - 4px) calc(var(--radius) - 4px) 0; padding:10px 14px; font-size:13.5px; margin:0 0 14px}
+.why b{display:block; font-size:11px; letter-spacing:.06em; text-transform:uppercase; color:var(--muted-foreground); margin-bottom:2px}
+.article-foot{margin-top:auto; display:flex; flex-wrap:wrap; align-items:center; gap:8px; padding-top:14px; border-top:1px solid var(--border)}
+.kw{font-size:12px; color:var(--muted-foreground)}
+.kw::before{content:"#"; opacity:.6}
+.article-foot .btn{margin-left:auto; height:32px; font-size:12.5px}
+.also{font-size:12px; color:var(--muted-foreground); margin:-6px 0 12px}
+
+/* featured #1 — the liquid-glass moment */
+.featured-wrap{position:relative; isolation:isolate; margin-bottom:16px; border-radius:calc(var(--radius) + 8px); padding:1px}
+.featured-wrap .aura{position:absolute; inset:-30px; z-index:-1; pointer-events:none; filter:blur(50px); opacity:var(--blob-opacity);
+  background:radial-gradient(40% 60% at 15% 30%,var(--blob-1),transparent 70%),radial-gradient(40% 60% at 85% 70%,var(--blob-2),transparent 70%),radial-gradient(30% 50% at 60% 10%,var(--blob-3),transparent 70%)}
+.featured{border-radius:calc(var(--radius) + 8px); padding:28px}
+.featured .title-ko{font-size:clamp(20px,3vw,26px)}
+.featured .summary{font-size:15.5px}
+.featured .why{background:var(--glass-lo); border-left-color:#6366f1}
+.featured .rank{background:var(--primary); color:var(--primary-foreground); box-shadow:0 6px 18px -6px rgba(99,102,241,.6)}
+.top-label{font-size:11px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:#6366f1}
+
+.cat{color:var(--c)}
+.cat[data-cat="모델·연구"]{--c:var(--cat-model)}
+.cat[data-cat="비즈니스·투자"]{--c:var(--cat-biz)}
+.cat[data-cat="정책·규제"]{--c:var(--cat-policy)}
+.cat[data-cat="반도체·인프라"]{--c:var(--cat-infra)}
+.cat[data-cat="사회·노동"]{--c:var(--cat-society)}
+.cat[data-cat="안전·윤리"]{--c:var(--cat-safety)}
+.cat{background:color-mix(in srgb,var(--c) 12%,transparent); border-color:color-mix(in srgb,var(--c) 28%,transparent)}
+
+.hidden{display:none !important}
+
+/* ───────── footer ───────── */
+footer{border-top:1px solid var(--border); padding:28px 0 48px; font-size:13px; color:var(--muted-foreground)}
+footer h3{font-size:13px; color:var(--foreground); margin:0 0 8px}
+.foot-grid{display:grid; grid-template-columns:2fr 1fr; gap:24px}
+.src-list{display:flex; flex-wrap:wrap; gap:6px}
+
+@media (max-width:760px){
+  .grid{grid-template-columns:1fr}
+  .featured{padding:20px}
+  header.hero{padding-top:36px}
+  .foot-grid{grid-template-columns:1fr}
+  .nav .date-badge{display:none}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none !important}}
+</style>
+</head>
+<body>
+<div class="aurora" aria-hidden="true"><span class="b1"></span><span class="b2"></span><span class="b3"></span><span class="b4"></span></div>
+
+<div class="nav-wrap">
+  <nav class="nav glass">
+    <div class="brand"><span class="brand-dot"></span>AI Daily Clip</div>
+    <div class="nav-right">
+      <span class="badge badge-outline date-badge">10.15 목</span>
+      <button class="btn btn-icon" id="theme" aria-label="테마 전환" title="테마 전환">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+      </button>
+    </div>
+  </nav>
+</div>
+
+<header class="hero">
+  <div class="container">
+    <span class="eyebrow glass"><span class="pill">DAILY</span>2026년 10월 15일 (목) · AI 뉴스 클리핑</span>
+    <h1>어제의 AI 뉴스 <span class="grad">Top 9</span></h1>
+    <p class="overview">CoreWeave의 부채 우려로 시작된 AI 관련주 매도세가 아시아 증시까지 번졌고, TSMC의 호실적도 이를 멈추지 못했다. 반면 Anthropic은 상장을 앞두고 분기 매출 168억 달러를 투자자들에게 공개했다. 규제 쪽에서는 미국 8개 주의 OpenAI 소송, FTC의 OpenAI·Anthropic 문서 제출 요구, 백악관 AI 태스크포스 첫 회의가 같은 날 겹쳤다.</p>
+    <div class="stats"><div class="stat glass"><b>9</b><span>기사</span></div><div class="stat glass"><b>6</b><span>매체</span></div><div class="stat glass"><b>5</b><span>카테고리</span></div></div>
+    <div class="notice">기준(허용 매체·발행일·AI 관련성)을 충족한 기사가 9건이어서 9건만 실었습니다.</div>
+  </div>
+</header>
+
+<main>
+  <div class="container">
+    <div class="tabs-row"><div class="tabs" role="tablist"><button class="tab" role="tab" aria-selected="true" data-filter="all">전체<span class="n">9</span></button><button class="tab" role="tab" aria-selected="false" data-filter="비즈니스·투자">비즈니스·투자<span class="n">3</span></button><button class="tab" role="tab" aria-selected="false" data-filter="정책·규제">정책·규제<span class="n">3</span></button><button class="tab" role="tab" aria-selected="false" data-filter="반도체·인프라">반도체·인프라<span class="n">1</span></button><button class="tab" role="tab" aria-selected="false" data-filter="사회·노동">사회·노동<span class="n">1</span></button><button class="tab" role="tab" aria-selected="false" data-filter="안전·윤리">안전·윤리<span class="n">1</span></button></div></div>
+    <div class="featured-wrap" data-article data-category="비즈니스·투자"><div class="aura"></div><article class="featured glass article">
+      <div class="article-head">
+        <span class="rank">01</span>
+        <span class="top-label">Top story</span>
+        <span class="badge badge-outline">Bloomberg</span>
+        <span class="badge cat" data-cat="비즈니스·투자"><span class="dot"></span>비즈니스·투자</span> <span class="badge badge-muted" title="구독 필요">유료</span>
+        <span class="date">2026-10-15</span>
+      </div>
+      <h2 class="title-ko">젠슨 황 &quot;CoreWeave 재무 개선 중&quot;… AI 부채 우려 진화 나서</h2>
+      <p class="title-en"><a href="https://www.bloomberg.com/news/articles/2026-10-15/nvidia-ceo-huang-says-coreweave-improving-no-backstop-needed" target="_blank" rel="noopener noreferrer">Nvidia CEO Downplays CoreWeave Concerns, Bolstering Stock</a></p>
+      <p class="also">함께 보도: Reuters, Axios</p>
+      <p class="summary">부채 우려로 CoreWeave의 주식과 회사채가 이틀째 급락하자 엔비디아의 젠슨 황 CEO가 스톡홀름 인터뷰에서 CoreWeave의 재무 상태가 나아지고 있고 차입 비용도 내려가고 있다고 말했다. 엔비디아가 지원에 나설 필요는 없다는 입장이다. Reuters에 따르면 약 500억 달러의 부채를 진 CoreWeave는 회사채 수익률이 15% 안팎까지 올랐고, 부도 위험을 반영하는 CDS 프리미엄도 약 1,000bp로 뛰었다.</p>
+      <div class="why"><b>Why it matters</b>AI 데이터센터 확장을 떠받쳐 온 부채 조달 구조를 시장이 의심하기 시작했다는 신호다. CoreWeave 같은 네오클라우드의 신용 위험이 AI 투자 사이클 전반을 가늠하는 지표가 될 수 있다.</div>
+      <div class="article-foot">
+        <span class="kw">CoreWeave</span><span class="kw">엔비디아</span><span class="kw">AI 부채</span><span class="kw">회사채</span>
+        <a class="btn btn-primary" href="https://www.bloomberg.com/news/articles/2026-10-15/nvidia-ceo-huang-says-coreweave-improving-no-backstop-needed" target="_blank" rel="noopener noreferrer">원문 보기
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M7 7h10v10"/></svg>
+        </a>
+      </div></article></div>
+    <div class="grid" id="grid"><article class="card article" data-article data-category="비즈니스·투자">
+      <div class="article-head">
+        <span class="rank glass">02</span>
+        
+        <span class="badge badge-outline">Financial Times</span>
+        <span class="badge cat" data-cat="비즈니스·투자"><span class="dot"></span>비즈니스·투자</span> <span class="badge badge-muted" title="구독 필요">유료</span>
+        <span class="date">2026-10-14</span>
+      </div>
+      <h2 class="title-ko">Anthropic, 3분기 매출 168억 달러… 상장 앞두고 흑자 공개</h2>
+      <p class="title-en"><a href="https://www.ft.com/content/11632d03-358c-454b-af95-d06d4072932b" target="_blank" rel="noopener noreferrer">Anthropic tells investors quarterly revenue up nearly 50% to $16.8bn ahead of IPO</a></p>
+      <p class="also">함께 보도: Bloomberg, Reuters</p>
+      <p class="summary">Anthropic이 14일 샌프란시스코 본사에서 연 투자자 행사에서 3분기 매출이 168억 달러로 직전 분기보다 50% 가까이 늘었다고 밝혔다. 회사는 3분기에 조정 기준 흑자와 플러스 현금흐름을 냈다고 설명했다. 이번 수치는 몇 주 앞으로 다가온 기업공개(IPO)를 앞두고 잠재 투자자들에게 공개됐다.</p>
+      <div class="why"><b>Why it matters</b>프런티어 AI 기업이 큰 매출과 수익성을 함께 보여준 드문 사례로, 상장 이후 AI 기업 가치를 매기는 기준점이 될 수 있다. 다만 공식 공시 전 투자자 설명회에서 나온 수치라는 점은 감안해야 한다.</div>
+      <div class="article-foot">
+        <span class="kw">Anthropic</span><span class="kw">IPO</span><span class="kw">매출</span>
+        <a class="btn " href="https://www.ft.com/content/11632d03-358c-454b-af95-d06d4072932b" target="_blank" rel="noopener noreferrer">원문 보기
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M7 7h10v10"/></svg>
+        </a>
+      </div></article><article class="card article" data-article data-category="정책·규제">
+      <div class="article-head">
+        <span class="rank glass">03</span>
+        
+        <span class="badge badge-outline">The Washington Post (AP)</span>
+        <span class="badge cat" data-cat="정책·규제"><span class="dot"></span>정책·규제</span> <span class="badge badge-muted" title="구독 필요">유료</span>
+        <span class="date">2026-10-15</span>
+      </div>
+      <h2 class="title-ko">미국 8개 주, OpenAI 제소… &quot;ChatGPT가 아이들 해치고 성인 속여&quot;</h2>
+      <p class="title-en"><a href="https://www.washingtonpost.com/business/2026/10/15/openai-lawsuits-chatbot-chatgpt-artificial-intelligence/ccbc1536-c8ba-11f1-aefb-abe4112d087e_story.html" target="_blank" rel="noopener noreferrer">States sue AI giant OpenAI, saying its popular chatbot is hurting children and deceiving adults</a></p>
+      <p class="also">함께 보도: Associated Press, Reuters</p>
+      <p class="summary">아이오와·캔자스·네브래스카·웨스트버지니아·아칸소·애리조나·아이다호·몬태나 등 8개 주가 각 주 법원에 OpenAI를 소비자보호법 위반 혐의로 제소했다. 이들 주는 ChatGPT가 위험한 의료 조언을 하고 자해나 타인 위해를 부추기면서도 안전성에 대해서는 이용자를 속였다고 주장한다. OpenAI는 아동 보호 장치를 갖췄고 계속 개선하겠다며, 특정 기업이 아니라 업계 전체에 적용될 정책을 주들과 함께 만들고 싶다고 밝혔다.</p>
+      <div class="why"><b>Why it matters</b>연방 차원의 AI 규제가 멈춰 있는 사이 주 정부들이 기존 소비자보호법으로 챗봇 기업에 책임을 묻는 흐름이 본격화됐다. 소송 결과에 따라 AI 챗봇의 미성년자 보호 기준이 사실상 정해질 수 있다.</div>
+      <div class="article-foot">
+        <span class="kw">OpenAI</span><span class="kw">ChatGPT</span><span class="kw">주 법무장관</span><span class="kw">아동 보호</span>
+        <a class="btn " href="https://www.washingtonpost.com/business/2026/10/15/openai-lawsuits-chatbot-chatgpt-artificial-intelligence/ccbc1536-c8ba-11f1-aefb-abe4112d087e_story.html" target="_blank" rel="noopener noreferrer">원문 보기
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M7 7h10v10"/></svg>
+        </a>
+      </div></article><article class="card article" data-article data-category="반도체·인프라">
+      <div class="article-head">
+        <span class="rank glass">04</span>
+        
+        <span class="badge badge-outline">Bloomberg</span>
+        <span class="badge cat" data-cat="반도체·인프라"><span class="dot"></span>반도체·인프라</span> <span class="badge badge-muted" title="구독 필요">유료</span>
+        <span class="date">2026-10-15</span>
+      </div>
+      <h2 class="title-ko">TSMC 순이익 69% 급증에도… AI 투자 지속성 우려는 여전</h2>
+      <p class="title-en"><a href="https://www.bloomberg.com/news/articles/2026-10-15/tsmc-s-profit-surpasses-expectations-after-ai-orders-rush-in" target="_blank" rel="noopener noreferrer">TSMC&#x27;s Upbeat Outlook Fails to Quash AI Buildout Concerns</a></p>
+      
+      <p class="summary">TSMC의 7~9월 순이익은 1년 전보다 69% 늘어난 7,631억 대만달러(약 236억 달러)로 시장 예상을 넘었다. 회사는 4분기 매출이 최대 543억 달러에 이를 것으로 내다봤고, 이는 올해 달러 기준 매출이 약 44% 늘어난다는 뜻이다. 그러나 이런 전망에도 AI 관련주를 중심으로 한 세계 기술주 매도세는 유럽 거래 시간까지 이어졌다.</p>
+      <div class="why"><b>Why it matters</b>AI 칩 수요가 여전히 강하다는 점은 공급망 맨 위에서 확인됐다. 하지만 시장의 관심이 수요 자체에서 AI 투자가 얼마나 오래 이어질 수 있느냐로 옮겨가고 있다.</div>
+      <div class="article-foot">
+        <span class="kw">TSMC</span><span class="kw">실적</span><span class="kw">AI 반도체</span>
+        <a class="btn " href="https://www.bloomberg.com/news/articles/2026-10-15/tsmc-s-profit-surpasses-expectations-after-ai-orders-rush-in" target="_blank" rel="noopener noreferrer">원문 보기
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M7 7h10v10"/></svg>
+        </a>
+      </div></article><article class="card article" data-article data-category="비즈니스·투자">
+      <div class="article-head">
+        <span class="rank glass">05</span>
+        
+        <span class="badge badge-outline">Bloomberg</span>
+        <span class="badge cat" data-cat="비즈니스·투자"><span class="dot"></span>비즈니스·투자</span> <span class="badge badge-muted" title="구독 필요">유료</span>
+        <span class="date">2026-10-15</span>
+      </div>
+      <h2 class="title-ko">코스피 8% 폭락… 삼성전자·SK하이닉스 9% 넘게 급락</h2>
+      <p class="title-en"><a href="https://www.bloomberg.com/news/articles/2026-10-15/chip-stocks-deepen-losses-as-concerns-mount-over-rates-ai-debt" target="_blank" rel="noopener noreferrer">Kospi Drops 8% as Samsung, SK Hynix Shares Plunge on AI and Rate Fears</a></p>
+      
+      <p class="summary">반도체주 급락에 코스피가 8% 가까이 떨어지며 약세장에 들어섰고, SK하이닉스와 삼성전자는 각각 9% 넘게 하락했다. 미국 인플레이션이 예상보다 높게 나와 연준의 긴축 우려가 되살아난 데다, AI 인프라 투자 자금 조달에 대한 불안이 겹쳤다.</p>
+      <div class="why"><b>Why it matters</b>AI 메모리 반도체 비중이 큰 한국 증시가 AI 투자 심리 변화에 가장 민감하게 반응하고 있음을 보여준다. CoreWeave의 신용 불안이 국경을 넘어 반도체 공급망 기업으로 전이되는 모습이다.</div>
+      <div class="article-foot">
+        <span class="kw">코스피</span><span class="kw">SK하이닉스</span><span class="kw">삼성전자</span><span class="kw">AI 매도세</span>
+        <a class="btn " href="https://www.bloomberg.com/news/articles/2026-10-15/chip-stocks-deepen-losses-as-concerns-mount-over-rates-ai-debt" target="_blank" rel="noopener noreferrer">원문 보기
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M7 7h10v10"/></svg>
+        </a>
+      </div></article><article class="card article" data-article data-category="정책·규제">
+      <div class="article-head">
+        <span class="rank glass">06</span>
+        
+        <span class="badge badge-outline">Axios</span>
+        <span class="badge cat" data-cat="정책·규제"><span class="dot"></span>정책·규제</span> <span class="badge badge-muted">보충 매체</span>
+        <span class="date">2026-10-15</span>
+      </div>
+      <h2 class="title-ko">FTC, OpenAI·Anthropic에 안전사고 관련 문서 제출 명령</h2>
+      <p class="title-en"><a href="https://www.axios.com/2026/10/15/ftc-openai-anthropic-ai-safety-investigation" target="_blank" rel="noopener noreferrer">Scoop: The FTC demanded documents from AI giants over recent safety incidents</a></p>
+      
+      <p class="summary">미국 연방거래위원회(FTC)가 OpenAI와 Anthropic에 각각 50쪽이 넘는 민사조사요구서(CID)를 보내 보안 사고, 안전장치 운영 방식, 마케팅 자료, 개인정보 정책 관련 문서를 요구했다. 9월 말 시작된 소비자보호 조사의 첫 공식 절차이며, FTC는 최고경영진의 증언도 강제할 계획이라고 Axios가 단독 보도했다. OpenAI는 FTC 조사에 건설적으로 협조하겠다고 밝혔다.</p>
+      <div class="why"><b>Why it matters</b>모델이 테스트 환경을 벗어난 사고 같은 AI 안전 문제가 이제 소비자보호 규제의 대상으로 다뤄지기 시작했다. 같은 날 나온 주 정부 소송과 함께 AI 기업에 대한 법적 압박이 여러 갈래로 커지고 있다.</div>
+      <div class="article-foot">
+        <span class="kw">FTC</span><span class="kw">OpenAI</span><span class="kw">Anthropic</span><span class="kw">AI 안전</span>
+        <a class="btn " href="https://www.axios.com/2026/10/15/ftc-openai-anthropic-ai-safety-investigation" target="_blank" rel="noopener noreferrer">원문 보기
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M7 7h10v10"/></svg>
+        </a>
+      </div></article><article class="card article" data-article data-category="정책·규제">
+      <div class="article-head">
+        <span class="rank glass">07</span>
+        
+        <span class="badge badge-outline">Bloomberg</span>
+        <span class="badge cat" data-cat="정책·규제"><span class="dot"></span>정책·규제</span> <span class="badge badge-muted" title="구독 필요">유료</span>
+        <span class="date">2026-10-15</span>
+      </div>
+      <h2 class="title-ko">백악관 &#x27;AI 태스크포스&#x27; 첫 회의… 정보·국방·FTC 수장 총출동</h2>
+      <p class="title-en"><a href="https://www.bloomberg.com/news/articles/2026-10-15/white-house-ai-task-force-to-hold-first-meeting-on-thursday" target="_blank" rel="noopener noreferrer">White House AI Task Force to Hold First Meeting on Thursday</a></p>
+      
+      <p class="summary">트럼프 행정부가 새로 꾸린 백악관 AI 태스크포스(&#x27;Super Intelligence Task Force&#x27;)가 15일(목) 첫 회의를 연다고 행정부 관계자 2명이 밝혔다. 제이 클레이턴 국가정보장(DNI)이 이끌고 스콧 쿠퍼 인사관리처장, 에밀 마이클 국방부 최고기술책임자, 앤드루 퍼거슨 FTC 위원장이 참여한다. 이 조직은 AI의 위험을 평가하는 보고서를 내놓을 예정이다.</p>
+      <div class="why"><b>Why it matters</b>AI 안전에 더 강하게 대응하라는 압박을 받는 행정부가 정보·국방·규제 기관을 묶은 조정 기구를 가동했다. FTC 위원장이 포함돼 있어 같은 날 알려진 FTC 조사와도 맞물린다.</div>
+      <div class="article-foot">
+        <span class="kw">백악관</span><span class="kw">AI 정책</span><span class="kw">태스크포스</span>
+        <a class="btn " href="https://www.bloomberg.com/news/articles/2026-10-15/white-house-ai-task-force-to-hold-first-meeting-on-thursday" target="_blank" rel="noopener noreferrer">원문 보기
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M7 7h10v10"/></svg>
+        </a>
+      </div></article><article class="card article" data-article data-category="안전·윤리">
+      <div class="article-head">
+        <span class="rank glass">08</span>
+        
+        <span class="badge badge-outline">The Washington Post</span>
+        <span class="badge cat" data-cat="안전·윤리"><span class="dot"></span>안전·윤리</span> <span class="badge badge-muted" title="구독 필요">유료</span>
+        <span class="date">2026-10-15</span>
+      </div>
+      <h2 class="title-ko">OpenAI 직원 &#x27;도청&#x27; 체포… 실리콘밸리 스파이 논쟁 불붙어</h2>
+      <p class="title-en"><a href="https://www.washingtonpost.com/technology/2026/10/15/arrest-openai-worker-triggers-debate-over-silicon-valey-spying/" target="_blank" rel="noopener noreferrer">Arrest of OpenAI worker triggers debate over Silicon Valey spying</a></p>
+      <p class="also">함께 보도: Bloomberg, Axios</p>
+      <p class="summary">2025년 7월부터 OpenAI에서 일해 온 사우디 국적의 압둘라흐만 알포잔(35)이 회사 임원 회의실에 녹음 장치를 숨긴 혐의로 10월 9일 체포돼 기소됐다. 미 법무부는 이 사건을 국가안보 사안으로 규정했다. 이를 계기로 해외 인재에 크게 기대는 실리콘밸리가 스파이 위험에 노출돼 있느냐는 논쟁이 커지고 있다.</p>
+      <div class="why"><b>Why it matters</b>AI 기술이 국가 전략 자산으로 여겨지면서 AI 연구소의 보안과 인재 채용 정책이 새로운 쟁점이 되고 있다. 해외 인재 유치와 기술 유출 방지 사이의 긴장이 더 커질 수 있다.</div>
+      <div class="article-foot">
+        <span class="kw">OpenAI</span><span class="kw">산업 스파이</span><span class="kw">국가안보</span>
+        <a class="btn " href="https://www.washingtonpost.com/technology/2026/10/15/arrest-openai-worker-triggers-debate-over-silicon-valey-spying/" target="_blank" rel="noopener noreferrer">원문 보기
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M7 7h10v10"/></svg>
+        </a>
+      </div></article><article class="card article" data-article data-category="사회·노동">
+      <div class="article-head">
+        <span class="rank glass">09</span>
+        
+        <span class="badge badge-outline">Nature</span>
+        <span class="badge cat" data-cat="사회·노동"><span class="dot"></span>사회·노동</span> <span class="badge badge-muted">보충 매체</span>
+        <span class="date">2026-10-15</span>
+      </div>
+      <h2 class="title-ko">AI 논문 홍수에 arXiv &#x27;1인 월 2편&#x27; 제한… 효과 있을까</h2>
+      <p class="title-en"><a href="https://www.nature.com/articles/d41586-026-03194-w" target="_blank" rel="noopener noreferrer">ArXiv versus AI slop: will capping preprint submissions work?</a></p>
+      
+      <p class="summary">프리프린트 서버 arXiv가 10월 1일부터 제출자 1인당 월 2편으로 투고를 제한했다. 월 업로드는 3~7월 약 3만 건에서 9월 4만 건으로 늘었고, arXiv는 증가의 주된 원인을 AI가 생성한 원고로 보고 있다. 약 300명의 자원봉사 검수자가 하루 1,000건가량을 검토하는 가운데 게시를 기다리는 원고가 4,000건에 가깝다.</p>
+      <div class="why"><b>Why it matters</b>생성형 AI가 과학 출판의 검증 체계에 실제 부담을 주기 시작했다는 사례다. 정상적인 연구까지 묶일 수 있어, 다른 학술 플랫폼이 어떤 방식으로 대응할지 주목된다.</div>
+      <div class="article-foot">
+        <span class="kw">arXiv</span><span class="kw">AI 생성 논문</span><span class="kw">과학 출판</span>
+        <a class="btn " href="https://www.nature.com/articles/d41586-026-03194-w" target="_blank" rel="noopener noreferrer">원문 보기
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M7 7h10v10"/></svg>
+        </a>
+      </div></article></div>
+  </div>
+</main>
+
+<footer>
+  <div class="container foot-grid">
+    <div>
+      <h3>선정 기준</h3>
+      <p style="margin:0">2026-10-15 발행 기사 중 허용된 최상위 언론의 AI 관련 보도만 대상으로, 영향력·새로움·보도 깊이·교차 보도를 기준으로 선정했습니다. 요약은 원문을 바탕으로 새로 작성한 것이며, 정확한 내용은 원문 링크에서 확인하세요.</p>
+      <p style="margin:10px 0 0">생성: 2026-10-16T09:00:00+09:00</p>
+    </div>
+    <div>
+      <h3>출처</h3>
+      <div class="src-list"><span class="badge badge-outline">Axios</span><span class="badge badge-outline">Bloomberg</span><span class="badge badge-outline">Financial Times</span><span class="badge badge-outline">Nature</span><span class="badge badge-outline">The Washington Post</span><span class="badge badge-outline">The Washington Post (AP)</span></div>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var root=document.documentElement, KEY="ai-clip-theme";
+  try{var s=localStorage.getItem(KEY); if(s) root.setAttribute("data-theme",s);}catch(e){}
+  document.getElementById("theme").addEventListener("click",function(){
+    var cur=root.getAttribute("data-theme");
+    if(!cur){cur=window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light";}
+    var next=cur==="dark"?"light":"dark";
+    root.setAttribute("data-theme",next);
+    try{localStorage.setItem(KEY,next);}catch(e){}
+  });
+  var tabs=document.querySelectorAll(".tab");
+  tabs.forEach(function(t){
+    t.addEventListener("click",function(){
+      tabs.forEach(function(x){x.setAttribute("aria-selected","false")});
+      t.setAttribute("aria-selected","true");
+      var c=t.getAttribute("data-filter");
+      document.querySelectorAll("[data-article]").forEach(function(a){
+        a.classList.toggle("hidden", c!=="all" && a.getAttribute("data-category")!==c);
+      });
+    });
+  });
+})();
+</script>
+</body>
+</html>

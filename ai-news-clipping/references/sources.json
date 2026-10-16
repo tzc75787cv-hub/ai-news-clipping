@@ -1,0 +1,23 @@
+{
+  "_comment": "AI 뉴스 클리핑 허용 매체 목록. tier1 = 기본 소스, tier2 = tier1만으로 10개가 안 될 때만 보충. 여기에 없는 도메인은 사용하지 않는다. 매체를 추가/삭제하려면 이 파일만 고치면 된다 (build_html.py가 이 파일을 읽어 검증한다).",
+  "tier1": [
+    {"name": "The Economist", "domains": ["economist.com"]},
+    {"name": "BBC", "domains": ["bbc.com", "bbc.co.uk"]},
+    {"name": "The New York Times", "domains": ["nytimes.com"]},
+    {"name": "Financial Times", "domains": ["ft.com"]},
+    {"name": "The Wall Street Journal", "domains": ["wsj.com"]},
+    {"name": "Reuters", "domains": ["reuters.com"]},
+    {"name": "Associated Press", "domains": ["apnews.com"]},
+    {"name": "Bloomberg", "domains": ["bloomberg.com"]},
+    {"name": "The Guardian", "domains": ["theguardian.com"]},
+    {"name": "The Washington Post", "domains": ["washingtonpost.com"]}
+  ],
+  "tier2": [
+    {"name": "MIT Technology Review", "domains": ["technologyreview.com"]},
+    {"name": "Nature", "domains": ["nature.com"]},
+    {"name": "Science", "domains": ["science.org"]},
+    {"name": "The Atlantic", "domains": ["theatlantic.com"]},
+    {"name": "The New Yorker", "domains": ["newyorker.com"]},
+    {"name": "Axios", "domains": ["axios.com"]}
+  ]
+}
